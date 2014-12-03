@@ -1,0 +1,114 @@
+--
+-- MySQL 5.5.39
+-- Wed, 03 Dec 2014 00:28:32 +0000
+--
+
+CREATE TABLE `accounts` (
+   `id` int(10) unsigned not null auto_increment,
+   `username` varchar(25) not null,
+   `email` varchar(80) not null,
+   `password` varchar(60) not null,
+   `birthdate` date not null,
+   `gender` enum('Female','Male') not null,
+   `sexual_orientation` enum('Straight','Gay','Bisexual') not null,
+   `remember_token` varchar(100),
+   `created_at` timestamp not null default '0000-00-00 00:00:00',
+   `updated_at` timestamp not null default '0000-00-00 00:00:00',
+   PRIMARY KEY (`id`),
+   UNIQUE KEY (`username`),
+   UNIQUE KEY (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=10;
+
+INSERT INTO `accounts` (`id`, `username`, `email`, `password`, `birthdate`, `gender`, `sexual_orientation`, `remember_token`, `created_at`, `updated_at`) VALUES 
+('6', 'foobar', 'foo@bar.com', '$2y$10$9RRnfQC6e6B40tcGdLYB3edLhyqCSQTaiK4aPNDdR5XvWm5gxAeWq', '1960-01-01', 'Male', 'Bisexual', 'KbFMV1uQ3oanx2pddDXy0Kd8jIqD97CrhlOvebR5ivVkTnhlC7c5XBnJGugL', '2014-11-06 17:38:11', '2014-11-28 23:16:36'),
+('9', 'moscas', 'moscas@moscas.com', '$2y$10$MpMWBJNWe8vnzotg4KqGceLQ1vXxwBDlTzgcziscJbyHFKtGVyOmm', '1988-06-05', 'Male', 'Gay', 'sdIxVomhECXI08GflJl7Epln4gkVejtTxlNCf3jKg631r20VHQMGTX6TPn7C', '2014-11-07 00:30:46', '2014-11-25 04:04:09');
+
+CREATE TABLE `conversations` (
+   `id` int(10) unsigned not null auto_increment,
+   `uid1` int(10) unsigned,
+   `uid2` int(10) unsigned,
+   `u1_last_message_read_id` bigint(20) unsigned default '0',
+   `u2_last_message_read_id` bigint(20) unsigned default '0',
+   `last_message_id` bigint(20) unsigned,
+   `created_at` timestamp not null default '0000-00-00 00:00:00',
+   `updated_at` timestamp not null default '0000-00-00 00:00:00',
+   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=2;
+
+INSERT INTO `conversations` (`id`, `uid1`, `uid2`, `u1_last_message_read_id`, `u2_last_message_read_id`, `last_message_id`, `created_at`, `updated_at`) VALUES 
+('1', '6', '9', '24', '25', '25', '2014-11-24 01:25:00', '2014-11-25 04:04:36');
+
+CREATE TABLE `messages` (
+   `id` bigint(20) unsigned not null auto_increment,
+   `conversation_id` int(10) unsigned,
+   `sender_id` int(10) unsigned,
+   `text` text,
+   `read` tinyint(1) default '0',
+   `created_at` timestamp not null default '0000-00-00 00:00:00',
+   `updated_at` timestamp not null default '0000-00-00 00:00:00',
+   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=26;
+
+INSERT INTO `messages` (`id`, `conversation_id`, `sender_id`, `text`, `read`, `created_at`, `updated_at`) VALUES 
+('1', '1', '6', 'first message', '1', '2014-11-24 01:25:00', '2014-11-24 02:08:05'),
+('2', '1', '9', 'second message\r\n\r\nmoscas here!', '1', '2014-11-24 02:11:37', '2014-11-24 05:41:47'),
+('3', '1', '9', 'third message\r\n\r\nmoscas here <!-- -->', '1', '2014-11-24 02:12:29', '2014-11-24 05:41:47'),
+('4', '1', '6', 'Fourth message\n\nFoobar here', '1', '2014-11-24 02:14:10', '2014-11-24 02:15:27'),
+('5', '1', '9', '', '1', '2014-11-24 02:15:01', '2014-11-24 05:41:47'),
+('6', '1', '9', '', '1', '2014-11-24 02:17:10', '2014-11-24 05:41:47'),
+('7', '1', '9', '', '1', '2014-11-24 02:42:41', '2014-11-24 05:41:47'),
+('8', '1', '9', '', '1', '2014-11-24 02:42:55', '2014-11-24 05:41:47'),
+('9', '1', '9', 'submitted?', '1', '2014-11-24 04:19:06', '2014-11-24 05:41:47'),
+('10', '1', '6', 'it\'s me', '1', '2014-11-24 04:20:00', '2014-11-24 04:20:50'),
+('11', '1', '9', 'teste', '1', '2014-11-24 04:20:30', '2014-11-24 05:41:47'),
+('12', '1', '6', 'wefwegferwge', '1', '2014-11-24 04:22:00', '2014-11-24 04:22:30'),
+('13', '1', '6', 'jama', '1', '2014-11-24 04:23:00', '2014-11-24 04:23:57'),
+('14', '1', '6', 'mais uma', '1', '2014-11-24 04:35:00', '2014-11-24 04:35:38'),
+('15', '1', '6', 'outra', '1', '2014-11-24 04:37:00', '2014-11-24 04:37:17'),
+('16', '1', '6', 'lol', '1', '2014-11-24 04:39:00', '2014-11-24 04:40:01'),
+('17', '1', '6', 'lalala', '1', '2014-11-24 05:23:00', '2014-11-24 05:23:00'),
+('18', '1', '6', 'mike', '1', '2014-11-24 05:26:00', '2014-11-24 05:28:16'),
+('19', '1', '6', 'adasdwefwefw', '1', '2014-11-24 05:38:00', '2014-11-24 05:38:00'),
+('20', '1', '9', 'introduzida', '1', '2014-11-24 05:38:45', '2014-11-24 05:41:47'),
+('21', '1', '6', 'new!', '1', '2014-11-24 05:39:00', '2014-11-24 05:39:53'),
+('22', '1', '6', 'ULTIMA', '1', '2014-11-25 00:03:18', '2014-11-25 01:35:24'),
+('23', '1', '6', 'NEW UPDATE', '1', '2014-11-25 01:34:20', '2014-11-25 01:42:11'),
+('24', '1', '9', 'EU', '1', '2014-11-25 02:10:18', '2014-11-25 02:16:01'),
+('25', '1', '6', 'novamente foobar', '1', '2014-11-25 04:04:36', '2014-11-25 04:05:34');
+
+CREATE TABLE `migrations` (
+   `migration` varchar(255) not null,
+   `batch` int(11) not null
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `migrations` (`migration`, `batch`) VALUES 
+('2014_10_16_003229_create_accounts_table', '1'),
+('2014_10_18_005414_create_profiles_table', '2'),
+('2014_10_18_021425_add_bday_gender_orientation_columns_to_accounts_table', '3');
+
+CREATE TABLE `profiles` (
+   `id` int(10) unsigned not null auto_increment,
+   `account_id` int(10) unsigned not null,
+   `occupation` varchar(255) not null,
+   `height` varchar(255) not null,
+   `want_kids` varchar(255) not null,
+   `kids_home` varchar(255) not null,
+   `ethnicity` varchar(255) not null,
+   `religion` varchar(255) not null,
+   `drinks` varchar(255) not null,
+   `smokes` varchar(255) not null,
+   `body_type` varchar(255) not null,
+   `education` varchar(255) not null,
+   `marital_status` varchar(255) not null,
+   `pets` varchar(255) not null,
+   `longest_relationship` varchar(255) not null,
+   `drugs` varchar(255) not null,
+   `eye_color` varchar(255) not null,
+   `about` text not null,
+   `created_at` timestamp not null default '0000-00-00 00:00:00',
+   `updated_at` timestamp not null default '0000-00-00 00:00:00',
+   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=2;
+
+INSERT INTO `profiles` (`id`, `account_id`, `occupation`, `height`, `want_kids`, `kids_home`, `ethnicity`, `religion`, `drinks`, `smokes`, `body_type`, `education`, `marital_status`, `pets`, `longest_relationship`, `drugs`, `eye_color`, `about`, `created_at`, `updated_at`) VALUES 
+('1', '6', 'student', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2014-11-07 00:30:46', '2014-11-09 18:51:54');
