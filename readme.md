@@ -1,1 +1,1 @@
-A project where I started building a simple social network using Laravel, also implementing a "live" private messaging system for users. Given it's not a huge project I decided not to use repositories. This project is currently unfinished.
+A project where I started building a simple social network using Laravel, also implementing a "live" private messaging system for users. Given it's not a huge project I decided not to make use of the IoC container. This project is currently unfinished.
